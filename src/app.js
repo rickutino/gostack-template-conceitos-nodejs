@@ -10,6 +10,16 @@ app.use(cors());
 
 const repositories = [];
 
+function logRequest(request, response, next) {
+	const { method, url } = request;
+
+  const logLabel = `[${method.toUpperCase()}] ${url}`;
+  console.log(logLabel);
+	return next();
+}
+
+app.use(logRequest);
+
 app.get("/repositories", (request, response) => {
   return response.json(repositories);
 });
