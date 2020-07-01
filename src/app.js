@@ -18,7 +18,18 @@ function logRequest(request, response, next) {
 	return next();
 }
 
+function validateRepositoryId(request, response, next) {
+	const { id } = request.params;
+
+	if(!isUuid(id)) {
+		return response.status(400).json({ error: 'Invalid repository ID' });
+	}
+	
+	return next();
+}
+
 app.use(logRequest);
+app.use('//repositories/:id', validateRepositoryId);
 
 app.get("/repositories", (request, response) => {
   return response.json(repositories);
